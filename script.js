@@ -89,6 +89,56 @@ document.addEventListener('DOMContentLoaded', () => {
 	const certifications = document.querySelector('#certifications');
 	if (certifications) certifications.insertAdjacentHTML('beforebegin', `<section class="section-pad section-sand preview-section"><div class="container preview-grid"><div><p class="eyebrow">Professional development</p><h2>Certified &amp;<br><em>Continuously Learning</em></h2></div><div><p>My professional development includes Executive Assistant and Virtual Assistant training, business management education, and ongoing development in digital and AI-enabled tools.</p><a class="button button-primary" href="#certifications">View Certifications</a></div></div></section>`);
 
+	if (contactForm) {
+		contactForm.addEventListener('submit', async (event) => {
+			event.preventDefault();
+
+			const status = contactForm.querySelector('.form-status');
+			const button = contactForm.querySelector('button[type="submit"]');
+
+			if (status) {
+				status.textContent = 'Sending...';
+				status.setAttribute('aria-busy', 'true');
+			}
+
+			if (button) {
+				button.disabled = true;
+				button.textContent = 'Sending...';
+			}
+
+			try {
+				const response = await fetch(contactForm.action, {
+					method: 'POST',
+					body: new FormData(contactForm),
+					headers: {
+						Accept: 'application/json'
+					}
+				});
+
+				if (response.ok) {
+					contactForm.reset();
+
+					if (status) {
+						status.textContent = 'Message sent successfully. Thank you for reaching out!';
+						status.removeAttribute('aria-busy');
+					}
+				} else {
+					throw new Error('Form submission failed.');
+				}
+			} catch (error) {
+				if (status) {
+					status.textContent = 'Sorry, there was a problem sending your message. Please try again or email tprimma@gmail.com directly.';
+					status.removeAttribute('aria-busy');
+				}
+			} finally {
+				if (button) {
+					button.disabled = false;
+					button.textContent = 'Send Message';
+				}
+			}
+		});
+	}
+
 	const contact = document.querySelector('#contact');
 	if (contact) contact.insertAdjacentHTML('beforebegin', `<section class="section-pad section-ink closing-cta"><div class="container closing-grid"><div class="section-heading light-heading"><p class="eyebrow">A clear next step</p><h2>Let’s <em>Connect</em></h2></div><div><p>For administrative, executive support, program coordination, and operations-related enquiries, I welcome the opportunity to connect.</p><div class="button-row"><a class="button button-accent" href="mailto:tprimma@gmail.com">Email Me</a><a class="button button-outline light-button" href="https://www.linkedin.com/in/primmakioko" target="_blank" rel="noopener">LinkedIn</a></div><p class="closing-details">+254 702 524 307 &nbsp; / &nbsp; Kenya</p></div></div></section>`);
 
