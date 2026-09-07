@@ -164,11 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	});
 
-	if (contactForm) contactForm.addEventListener('submit', (event) => {
-		event.preventDefault();
-		const status = contactForm.querySelector('.form-status');
-		if (status) status.textContent = 'This form is not connected yet. Please email tprimma@gmail.com directly.';
-	});
 
 		document.querySelectorAll('.gallery-grid').forEach((grid) => {
 		const seenPaths = new Set();
